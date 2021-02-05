@@ -1,0 +1,54 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: This is CFT for Demo
+
+Parameters:
+  ImageId:
+    Description: Type or Paste the ami your would like to use to create EC2 Instance, e.g. ami-027cab9a7bf0155df
+    Type: String
+  KeyName:
+    Description: Select KeyPair to access the created EC2 Instance
+    Type: AWS::EC2::KeyPair::KeyName
+  CidrIp:
+    Description: Give SourceIP range to access EC2, eg. 0.0.0.0/0
+    Type: String
+  Name:
+    Description: Type Name to be used while creating different resources
+    Type: String
+
+Resources:
+  EC2Server:
+    Type: AWS::EC2::Instance
+    Properties:
+      ImageId: !Ref ImageId
+      InstanceType: t2.micro
+      KeyName:
+        Ref: KeyName
+      SecurityGroups:
+      - Ref: SecurityGroup
+
+  SecurityGroup:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupDescription: Managed by CFT
+      GroupName: !Ref Name
+      SecurityGroupIngress:
+      - CidrIp: !Ref CidrIp
+        FromPort: 22
+        ToPort: 22
+        IpProtocol: tcp
+      - CidrIp: !Ref CidrIp
+        FromPort: 80
+        ToPort: 80
+        IpProtocol: tcp
+
+Outputs:
+  PublicIp:
+    Description: Public IP of EC2 Server
+    Value: !GetAtt EC2Server.PublicIp
+  ApacheUrl:
+    Description: HTTP Url to Access the Apache Service Running in EC2 Server
+    Value: !Join
+    - ''
+    - - 'http://'
+      - !GetAtt EC2Server.PublicDnsName
+      
