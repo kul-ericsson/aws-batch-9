@@ -13,6 +13,9 @@
   	<sonar.organization>kmayer10</sonar.organization>
   	<sonar.host.url>https://sonarcloud.io</sonar.host.url>
   	<sonar.login>faff74d8cb559ee0ed1500446f12b3918db42332</sonar.login>
+	<java.version>1.8</java.version>
+	<maven.compiler.source>${java.version}</maven.compiler.source>
+	<maven.compiler.target>${java.version}</maven.compiler.target>
   </properties>
 	
   <dependencies>
