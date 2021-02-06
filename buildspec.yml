@@ -1,0 +1,13 @@
+version: 0.2
+phases: 
+  install:
+    commands:
+      - apt-get update -y
+      - apt-get install maven -y
+  pre_build:
+    commands:
+      - mvn --version
+  build:
+    commands:
+      - mvn clean package
+      
