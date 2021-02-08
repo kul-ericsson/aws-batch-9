@@ -90,3 +90,22 @@ resource "aws_route_table_association" "natgw_rt_3" {
   subnet_id = aws_subnet.sn-3.id
   route_table_id = aws_route_table.natgw_rt.id
 }
+
+data "aws_caller_identity" "current" { }
+
+data "aws_vpc" "default" {
+  filter {
+    name = "tag:Name"
+    values = ["default"]
+  }
+}
+
+resource "aws_vpc_peering_connection" "pc" {
+  vpc_id = aws_vpc.vpc.id
+  peer_owner_id = data.aws_caller_identity.current.account_id
+  peer_vpc_id = data.aws_vpc.default.id
+  tags = {
+    "Name" = "thinknyx-${var.tagName}"
+  }
+  auto_accept = true
+}
