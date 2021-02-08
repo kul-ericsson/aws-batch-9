@@ -1,7 +1,7 @@
 resource "null_resource" "mount_efs" {
-  triggers = {
-    build = timestamp()
-  }
+  #triggers = {
+    #build = timestamp()
+  #}
   provisioner "remote-exec" {
     connection {
       type = "ssh"
@@ -32,5 +32,20 @@ resource "null_resource" "setup_terraform" {
       "sudo cp terraform /usr/bin && sudo chmod 755 /usr/bin/terraform",
       "terraform --version"
     ]
+  }
+}
+
+
+
+resource "null_resource" "move_creds" {
+  provisioner "file" {
+    connection {
+      type = "ssh"
+      user = "ubuntu"
+      private_key = file("C:/training/ericsson/aws/kul-ericsson-thinknyx.pem")
+      host = aws_instance.kul.public_ip
+    }
+    source = "C:/Users/kulbh/.aws/credentials"
+    destination = "~/.aws/credentials"
   }
 }
