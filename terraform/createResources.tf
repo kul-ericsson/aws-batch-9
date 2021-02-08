@@ -4,7 +4,8 @@ resource "aws_instance" "kul" {
   key_name = "kul-ericsson-thinknyx"
   tags = {
     "Name" = "thinknyx-${var.tagName}"
-  } 
+  }
+  vpc_security_group_ids = [ aws_security_group.sg.id ]
 }
 
 resource "aws_security_group" "sg" {
