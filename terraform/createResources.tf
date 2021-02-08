@@ -29,6 +29,13 @@ resource "aws_security_group" "sg" {
     to_port = 80
     cidr_blocks = ["0.0.0.0/0"]
   }
+  ingress {
+    description = "EFS Port"
+    protocol = "tcp"
+    from_port = 2049
+    to_port = 2049
+    cidr_blocks = [ data.aws_vpc.vpc.cidr_block ]
+  }
   egress {
     description = "All open Out bound traffic"
     protocol = "-1"
@@ -37,3 +44,4 @@ resource "aws_security_group" "sg" {
     cidr_blocks = ["0.0.0.0/0"]
   }
 }
+
