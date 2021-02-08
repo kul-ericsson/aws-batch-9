@@ -35,8 +35,6 @@ resource "null_resource" "setup_terraform" {
   }
 }
 
-
-
 resource "null_resource" "move_creds" {
   provisioner "file" {
     connection {
